@@ -1,0 +1,42 @@
+    private void handleClickEvent(MotionEvent event) {
+
+        int index = 0;
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View child = getChildAt(i);
+            if (child.getVisibility() == GONE) {
+                continue;
+            }
+            if (isMotionEventInView(child, event)) {
+                //如果点击的是主item,如果当前是菜单展开状态,则先收起菜单,并消费此次点击
+                if (child == mCenterView && mStatus != STATUS_NORMAL) {
+
+                    hideMenu();
+                } else if (null != mOnItemClickListener) {
+
+                    mOnItemClickListener.onItemClick(child, index, child == mCenterView);
+                }
+                break;
+            }
+            index++;
+        }
+    }
+
+    /**
+     * 判断点击事件是否在view中
+     *
+     * @param view
+     * @param event
+     * @return
+     */
+    private boolean isMotionEventInView(View view, MotionEvent event) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        boolean isBeyondLeft = event.getRawX() < x;
+        boolean isBeyondTop = event.getRawY() < y;
+        boolean isBeyondRight = event.getRawX() > (x + view.getMeasuredWidth());
+        boolean isBeyondBottom = event.getRawY() > (y + view.getMeasuredHeight());
+        return !isBeyondLeft && !isBeyondTop && !isBeyondRight && !isBeyondBottom;
+    }

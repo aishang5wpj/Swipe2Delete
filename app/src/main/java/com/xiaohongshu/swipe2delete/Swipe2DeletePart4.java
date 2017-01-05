@@ -13,10 +13,10 @@ import android.widget.Scroller;
 
 /**
  * Created by wupengjian on 16/11/9.
- * <p/>
+ * <p>
  * http://blog.csdn.net/aishang5wpj/article/details/54093911
  */
-public class Swipe2DeleteViewGroup extends ViewGroup {
+public class Swipe2DeletePart4 extends ViewGroup {
 
     private static final int STATUS_NORMAL = 0;
     private static final int STATUS_EXPAND = 1;
@@ -24,7 +24,6 @@ public class Swipe2DeleteViewGroup extends ViewGroup {
     private static final int HOVER_TAP_TIMEOUT = 150;
     private View mCenterView;
     private Scroller mScroller;
-    private VelocityTracker mVelocityTracker = null;
     private ViewConfiguration mViewConfiguration;
     private float mLastTouchX, mScrollX;
     private int mMaxScrollDistance, mMinScrollDistance;
@@ -32,15 +31,15 @@ public class Swipe2DeleteViewGroup extends ViewGroup {
     private MotionEvent mMoveDownEvent;
     private OnItemClickListener mOnItemClickListener;
 
-    public Swipe2DeleteViewGroup(Context context) {
+    public Swipe2DeletePart4(Context context) {
         this(context, null);
     }
 
-    public Swipe2DeleteViewGroup(Context context, AttributeSet attrs) {
+    public Swipe2DeletePart4(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public Swipe2DeleteViewGroup(Context context, AttributeSet attrs, int defStyleAttr) {
+    public Swipe2DeletePart4(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mScroller = new Scroller(context);
         mViewConfiguration = ViewConfiguration.get(context);
@@ -103,16 +102,9 @@ public class Swipe2DeleteViewGroup extends ViewGroup {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mMoveDownEvent = MotionEvent.obtain(event);
-                if (mVelocityTracker == null) {
-                    mVelocityTracker = VelocityTracker.obtain();
-                } else {
-                    mVelocityTracker.clear();
-                }
-                mVelocityTracker.addMovement(event);
                 break;
             case MotionEvent.ACTION_MOVE:
 
-                mVelocityTracker.addMovement(event);
                 updateScrollX(mLastTouchX - event.getRawX());
                 break;
             case MotionEvent.ACTION_UP:
@@ -128,22 +120,7 @@ public class Swipe2DeleteViewGroup extends ViewGroup {
                     handleClickEvent(event);
                 } else {
 
-                    mVelocityTracker.computeCurrentVelocity(1000);
-                    float velocityX = mVelocityTracker.getXVelocity();
-                    if (Math.abs(velocityX) > mViewConfiguration.getScaledMinimumFlingVelocity()) {
-                        if (velocityX > 0) {
-                            hideMenu();
-                        } else {
-                            showMenu();
-                        }
-                    } else {
-
-                        toggleStatus();
-                    }
-                }
-                if (mVelocityTracker != null) {
-                    mVelocityTracker.recycle();
-                    mVelocityTracker = null;
+                    toggleStatus();
                 }
                 break;
             case MotionEvent.ACTION_CANCEL:
