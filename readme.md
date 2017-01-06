@@ -130,7 +130,7 @@ activity_main.xml
 
 有了上面这两条要求，在ViewGroup的onMeasure中我们就知道该如何进行测量了。
 
-测量分为对子View测量和对自身进行测量。根据上面的描述，主布局的宽和高应该是W和h，而两个MenuItem的宽和高应该分别为h。那么整个ViewGroup的宽是不是就应该是W+2了呢？
+测量分为`对子View测量`和`对ViewGroup自身进行测量`。根据上面的描述，主布局的宽和高应该是W和h，而两个MenuItem的宽和高应该分别为h。那么整个ViewGroup的宽是不是就应该是W+2h了呢？
 
 实际上我这里算的ViewGroup的宽却是W。为什么呢？
 
@@ -176,7 +176,7 @@ activity_main.xml
 
 第10行，保存主布局的子View。
 
-第14~17行，遍历所有子View，并且跳过Visilility为Gone的子View。
+第14~17行，遍历所有子View，并且跳过`Visilility`为`Gone`的子View。
 
 第19~23行，如果当前子View是主布局，则指定其宽度为ViewGroup的宽度；否则指定其宽度为ViewGroup的高度。（这样它就是一个正方形了）
 
@@ -209,7 +209,7 @@ activity_main.xml
         child.layout(left, top, left + width, top + height);
     }
 ```
-代码第7~10行，遍历所有子View，如果visibility是Gone，则跳过。
+代码第7~10行，遍历所有子View，如果`visibility`是`Gone`，则跳过。
 
 第11行，实际调用的是`child.layout(left, top, left + width, top + height)`，分别确定子View的左上右下分别相对ViewGroup的位置。其中offset用来记录偏移位置。
 
@@ -217,7 +217,7 @@ activity_main.xml
 
 这样就可以确定所有子View的位置了。
 
-至此，策划删除ViewGroup就基本实现了，不过显示在屏幕外的MenuItem还看不到，现在来加上侧滑滚动逻辑，来让MenuItem可以侧滑出来。
+至此，侧滑删除ViewGroup就基本实现了，不过显示在屏幕外的MenuItem还看不到，现在来加上侧滑滚动逻辑，来让MenuItem可以侧滑出来。
 
 ##OnTouchEvent处理滚动逻辑
 上面说了，侧滑滚动的原理其实是让ViewGroup中的内容滚动，而不是滚动ViewGroup本身。
